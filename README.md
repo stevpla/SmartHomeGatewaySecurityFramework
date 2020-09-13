@@ -1,0 +1,2 @@
+# SmartHomeGatewaySecurityFramework
+openHAB authorization and authentication scheme delegating user's roles and allowing different access levels on Things. OAuth2.0 service and JWT (Json Web Token) are used as well as a python Proxy server. OAuth service is implemented by ControlThings server, an open source authorization server responsible for tokens generation. Python Proxy and ControlThings Server are implemented and supported by Nikos Fotiou (Researcher at Athens University of Economics &amp; Business - AUEB).
