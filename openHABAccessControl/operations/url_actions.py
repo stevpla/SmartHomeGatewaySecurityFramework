@@ -1,48 +1,58 @@
 import json
-from flask import send_from_directory, render_template
+from flask import send_from_directory, render_template, jsonify
 import requests
 from operations.json_file_operations import store_token_to_file_system
 
 
 def process_url_form_data(request_from_webpage):
-    flag = False
+    flag_body = False
+    flag_response = False
     # first see if user wants to cause action
-    # method: GET and URL value and file. Rest form variables are null-empty-default.
+    # method: GET or DELETE and URL value and file. Rest form variables are null-empty-default.
     res = request_from_webpage.form
     # if checkbox of body is default
     try:
         print(res['addBodyId'])
-        flag = True
+        flag_body = True
     except Exception:
-        flag = False
+        flag_body = False
 
     # common variables for both cases
     url = res['urlId']
     method_req = res['methodId']
     file = request_from_webpage.files['fileToUploadId']
     access_token_var = json.loads(file.read())['access_token']
-    # save json file in order to open it and read token
-    # file.save(secure_filename(file.filename))
+    # create header and load json to read access token
+    headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + access_token_var + ''
+    }
 
-    if flag:
-        # Now take values from form
+    if flag_body:
+        # Now take body from form
         body = res['dataId']
         # check for each method and act:
         if method_req == 'POST':
-            w = 3
+            response = requests.post('http://proxy-node:9000' + url, headers=headers, data=body)
         elif method_req == 'PUT':
-            t = 1
-        elif method_req == 'DELETE':
-            s = 0
-    elif not flag:
-        # create header and load json to read access token
-        headers = {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + access_token_var + ''
-        }
+            response = requests.put('http://proxy-node:9000' + url, headers=headers, data=body)
+    elif not flag_body:
         # http request to Proxy Server
-        response = requests.get('http://proxy-node:9000' + url, headers=headers)
-        return response
+        if method_req == 'GET':
+            response = requests.get('http://proxy-node:9000' + url, headers=headers)
+        elif method_req == 'DELETE':
+            response = requests.delete('http://proxy-node:9000' + url, headers=headers)
+    # now check if response has json response. If no, put None
+    try:
+        print(response.json())
+        flag_response = True
+    except Exception:
+        flag_response = False
+
+    if flag_response:
+        return {"status": response, "content": response.json()}
+    elif not flag_response:
+        return {"status": response, "content": []}
 
 
 def process_oauth_form_data(request_from_webpage):

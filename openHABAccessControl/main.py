@@ -15,9 +15,9 @@ def serve_proxy_data_ui():
     if request.method == 'POST':
         # Delete any .json file because user has to manually upload json file from UI
         delete_json_files()
-        # process form data and then create http request to
-        # ControlThings
-        return render_template("response.html", result=process_url_form_data(request))
+        # process form data and then create http request to Proxy Server
+        result_dict = process_url_form_data(request)
+        return render_template("response.html", result=result_dict["status"], cont=result_dict["content"])
 
 
 @app.route('/smart_home_oauth', methods=['GET'])

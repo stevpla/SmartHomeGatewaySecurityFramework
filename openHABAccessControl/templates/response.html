@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="icon" href="https://library.kissclipart.com/20180903/vbw/kissclipart-smart-house-icon-clipart-computer-icons-home-autom-010f327e75926a51.png">
     <meta charset="utf-8" />
     <title>openHAB Smart Home</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,7 +70,12 @@ body {
 </div>
    <div style="padding-left:20px">
       <form action = "http://localhost:7000/smart_home">
-         <p>{% print(result) %}</p>
+          <p>{% print(result) %}</p>
+          <ul>
+           {% for x in cont %}
+          <pre>{{x}}</pre>
+           {% endfor %}
+          </ul>
          <p><input type = "submit" value = "back to home"/></p>
       </form>
    </div>
