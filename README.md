@@ -2,7 +2,8 @@
 openHAB authorization and authentication scheme delegating user's roles and allowing different access levels on Things. OAuth2.0 service and JWT (Json Web Token) are used as well as a python Proxy server for our proposed scenario. OAuth service is implemented by [ControlThings Server](https://as.controlthings.gr/) , an open source authorization server responsible for json web tokens generation. [Python Proxy Server](https://github.com/mmlab-aueb/identity-authentication-authorization) and [ControlThings Server](https://as.controlthings.gr/) are implemented and supported by [Nikos Fotiou](https://github.com/nikosft) (Researcher at AUEB).
 
 ## Proposed System Architecture
-![]
+
+<img src="system.png" >
 
 ## Prerequisites
 
